@@ -114,6 +114,7 @@ const ScrollableTabView = createReactClass({
 
     if (props.page >= 0 && props.page !== this.state.currentPage) {
       this.goToPage(props.page);
+
     }
   },
 
@@ -297,6 +298,7 @@ const ScrollableTabView = createReactClass({
     if (typeof localNextPage === 'object') {
       localNextPage = nextPage.nativeEvent.position;
     }
+
     const currentPage = this.state.currentPage;
     this.updateSceneKeys({
       page: localNextPage,
@@ -305,6 +307,9 @@ const ScrollableTabView = createReactClass({
   },
 
   _onChangeTab(prevPage, currentPage) {
+
+    this.props._renderDataOnScroll(currentPage)
+
     this.props.onChangeTab({
       i: currentPage,
       ref: this._children()[currentPage],
