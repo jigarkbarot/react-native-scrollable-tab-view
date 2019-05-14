@@ -114,6 +114,7 @@ const ScrollableTabView = createReactClass({
 
     if (props.page >= 0 && props.page !== this.state.currentPage) {
       this.goToPage(props.page);
+
     }
   },
 
@@ -286,6 +287,7 @@ const ScrollableTabView = createReactClass({
   _onMomentumScrollBeginAndEnd(e) {
     const offsetX = e.nativeEvent.contentOffset.x;
     const page = Math.round(offsetX / this.state.containerWidth);
+
     if (this.state.currentPage !== page) {
       this._updateSelectedPage(page);
     }
@@ -305,6 +307,9 @@ const ScrollableTabView = createReactClass({
   },
 
   _onChangeTab(prevPage, currentPage) {
+
+    this.props._renderDataOnScroll(currentPage)
+
     this.props.onChangeTab({
       i: currentPage,
       ref: this._children()[currentPage],
