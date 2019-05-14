@@ -43,7 +43,6 @@ const ScrollableTabView = createReactClass({
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
     prerenderingSiblingsNumber: PropTypes.number,
-    isDrawerVisible: PropTypes.bool
   },
 
   getDefaultProps() {
@@ -57,7 +56,6 @@ const ScrollableTabView = createReactClass({
       scrollWithoutAnimation: false,
       locked: false,
       prerenderingSiblingsNumber: 0,
-      isDrawerVisible: true
     };
   },
 
@@ -130,7 +128,7 @@ const ScrollableTabView = createReactClass({
 
   goToPage(pageNumber) {
     if (Platform.OS === 'ios') {
-      const offset = pageNumber * this.state.containerWidth
+      const offset = pageNumber * this.state.containerWidth;
       if (this.scrollView) {
         this.scrollView.getNode().scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
       }
@@ -148,52 +146,6 @@ const ScrollableTabView = createReactClass({
     this.updateSceneKeys({
       page: pageNumber,
       callback: this._onChangeTab.bind(this, currentPage, pageNumber),
-    });
-  },
-
-  openDrawer() {
-    if (Platform.OS === 'ios') {
-      const offset = this.state.containerWidth - (this.state.containerWidth/3)
-      if (this.scrollView) {
-        this.scrollView.getNode().scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
-      }
-    } else {
-      if (this.scrollView) {
-        if (this.props.scrollWithoutAnimation) {
-          this.scrollView.getNode().setPageWithoutAnimation(1);
-        } else {
-          this.scrollView.getNode().setPage(1);
-        }
-      }
-    }
-
-    const currentPage = this.state.currentPage;
-    this.updateSceneKeys({
-      page: 1,
-      callback: this._onChangeTab.bind(this, currentPage, 1),
-    });
-  },
-
-  closeDrawer() {
-    if (Platform.OS === 'ios') {
-      const offset = 0
-      if (this.scrollView) {
-        this.scrollView.getNode().scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
-      }
-    } else {
-      if (this.scrollView) {
-        if (this.props.scrollWithoutAnimation) {
-          this.scrollView.getNode().setPageWithoutAnimation(0);
-        } else {
-          this.scrollView.getNode().setPage(0);
-        }
-      }
-    }
-
-    const currentPage = this.state.currentPage;
-    this.updateSceneKeys({
-      page: 0,
-      callback: this._onChangeTab.bind(this, currentPage, 0),
     });
   },
 
@@ -278,7 +230,6 @@ const ScrollableTabView = createReactClass({
         )}
         onMomentumScrollBegin={this._onMomentumScrollBeginAndEnd}
         onMomentumScrollEnd={this._onMomentumScrollBeginAndEnd}
-        onScrollEndDrag={this._onScrollEndDrag}
         scrollEventThrottle={16}
         scrollsToTop={false}
         showsHorizontalScrollIndicator={false}
@@ -322,13 +273,10 @@ const ScrollableTabView = createReactClass({
   _composeScenes() {
     return this._children().map((child, idx) => {
       let key = this._makeSceneKey(child, idx);
-      let width = (this.props.isDrawerVisible)
-        ? (idx === 0) ? this.state.containerWidth : (this.state.containerWidth - (this.state.containerWidth/3))
-        : this.state.containerWidth
       return <SceneComponent
         key={child.key}
         shouldUpdated={this._shouldRenderSceneKey(idx, this.state.currentPage)}
-        style={{width: width}}
+        style={{width: this.state.containerWidth, }}
       >
         {this._keyExists(this.state.sceneKeys, key) ? child : <View tabLabel={child.props.tabLabel}/>}
       </SceneComponent>;
@@ -338,18 +286,9 @@ const ScrollableTabView = createReactClass({
   _onMomentumScrollBeginAndEnd(e) {
     const offsetX = e.nativeEvent.contentOffset.x;
     const page = Math.round(offsetX / this.state.containerWidth);
+
     if (this.state.currentPage !== page) {
       this._updateSelectedPage(page);
-    }
-  },
-
-  _onScrollEndDrag(e) {
-    if (this.props.isDrawerVisible) {
-      const offsetX = e.nativeEvent.contentOffset.x;
-      const menuWidth = this.state.containerWidth - (this.state.containerWidth/3);
-      const halfWidth = menuWidth/2;
-      if (offsetX <= halfWidth)
-        this.closeDrawer();
     }
   },
 
@@ -358,7 +297,6 @@ const ScrollableTabView = createReactClass({
     if (typeof localNextPage === 'object') {
       localNextPage = nextPage.nativeEvent.position;
     }
-
     const currentPage = this.state.currentPage;
     this.updateSceneKeys({
       page: localNextPage,
