@@ -119,9 +119,6 @@ const ScrollableTabBar = createReactClass({
         const lineLeft = this._tabsMeasurements[position].left;
         const lineRight = this._tabsMeasurements[position].right;
 
-
-        console.log()
-
         if (position < tabCount - 1) {
 
             const nextTabLeft = this._tabsMeasurements[position + 1].left;
@@ -164,13 +161,11 @@ const ScrollableTabBar = createReactClass({
 
                 <View>
                 <View style={{
-                    //marginLeft: page === 0 ? 10 : 0,
                     width: CATE_IMAGE_Width - 8,
                     overflow: "hidden",
-                    //backgroundColor: "red",
                     borderRadius: 10, alignItems: "center", justifyContent: "center", flex: 1, flexDirection: "column"
                 }}>
-                    <Animated.Image style={{
+                    <Image style={{
                         height: "100%",
                         width: "95%",
                         borderRadius: 10
@@ -229,8 +224,6 @@ const ScrollableTabBar = createReactClass({
             bottom: 0,
         };
 
-        console.log(this.state._widthTabUnderline)
-
         const dynamicTabUnderline = {
             left: this.state._leftTabUnderline,
             width: this.state._widthTabUnderline,
@@ -240,7 +233,7 @@ const ScrollableTabBar = createReactClass({
         return <Animated.View
             style={[styles.container, {
                 backgroundColor: this.props.backgroundColor,
-                //height: this.props.cateImageViewHeight,
+                height: this.props.cateImageViewHeight,
             }, this.props.style,]}
             onLayout={this.onContainerLayout}
         >
