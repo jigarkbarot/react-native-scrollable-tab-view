@@ -119,7 +119,11 @@ const ScrollableTabBar = createReactClass({
         const lineLeft = this._tabsMeasurements[position].left;
         const lineRight = this._tabsMeasurements[position].right;
 
+
+        console.log()
+
         if (position < tabCount - 1) {
+
             const nextTabLeft = this._tabsMeasurements[position + 1].left;
             const nextTabRight = this._tabsMeasurements[position + 1].right;
 
@@ -130,6 +134,7 @@ const ScrollableTabBar = createReactClass({
            // this.state._widthTabUnderline.setValue(newLineRight - newLineLeft);
             this.state._widthTabUnderline.setValue(30);
         } else {
+
             this.state._leftTabUnderline.setValue(lineLeft + 51);
             //this.state._widthTabUnderline.setValue(lineRight - lineLeft);
             this.state._widthTabUnderline.setValue(30);
@@ -154,8 +159,10 @@ const ScrollableTabBar = createReactClass({
                 accessibilityTraits='button'
                 onPress={() => onPressHandler(page)}
                 onLayout={onLayoutHandler}
-                hitSlop={{top: 50, left: 10, bottom: 10, right: 10}}>
+                hitSlop={{top: 50, left: 10, bottom: 10, right: 10}}
+            >
 
+                <View>
                 <View style={{
                     //marginLeft: page === 0 ? 10 : 0,
                     width: CATE_IMAGE_Width - 8,
@@ -163,7 +170,7 @@ const ScrollableTabBar = createReactClass({
                     //backgroundColor: "red",
                     borderRadius: 10, alignItems: "center", justifyContent: "center", flex: 1, flexDirection: "column"
                 }}>
-                    <Image style={{
+                    <Animated.Image style={{
                         height: "100%",
                         width: "95%",
                         borderRadius: 10
@@ -173,7 +180,7 @@ const ScrollableTabBar = createReactClass({
                     />
                     <View style={{
                         width: '95%',
-                        bottom: 5,
+                        bottom: 7,
                         position: 'absolute',
                         zIndex: 100,alignItems: "center",
                     }}>
@@ -182,52 +189,25 @@ const ScrollableTabBar = createReactClass({
                             fontWeight: "800",
                             textAlign: "center",
                         }} numberOfLines={1}>{category.category_name}</Text>
-                       {/* {isTabActive &&
-                        <View style={{width:"30%",backgroundColor:"white",height:3}}/>
-                        }*/}
                     </View>
 
-                    <LinearGradient colors={["transparent", '#535354',]}
+                    <LinearGradient colors={["transparent", '#535354']}
                                     style={{
-                                        height: 20,
+                                        height: 25,
                                         width: '95%',
                                         alignItems: 'center',
                                         position: 'absolute',
                                         bottom: 0,
                                         borderBottomLeftRadius: 10,borderBottomRightRadius: 10
                                     }}/>
-                    {/*<Text>{category.category_name}</Text>*/}
-                    {/* <ImageBackground
-                        source={{uri: "https://www.staplesadvantage.co.uk/fileadmin/san/opcos/eu/images/solutions/sustainable_environment/vendors/diversey_sure/sure_square_small.jpg"}}
-                        style={{
-                            flex:1,
-                            height: null,
-                            width: "95%",
-                            alignItems: "center",justifyContent:"center"
-                        }}
-                        imageStyle={{borderRadius: 10,}}
-                    >
-                    </ImageBackground>*/}
-                    {/* <ImageBackground
-                        source={{uri: "https://www.staplesadvantage.co.uk/fileadmin/san/opcos/eu/images/solutions/sustainable_environment/vendors/diversey_sure/sure_square_small.jpg"}}
-                        style={{
-                            height: "100%",// this.props.cateImageHeight,
-                            width: "95%",
-                        }}
-                        imageStyle={{borderRadius: 10,}}
-                    >
-                        <View style={{alignItems: "center", justifyItems: "flex-end", flexDirection: "column",bottom:10, height: "100%",}}>
-                            <Text style={{
-                                color: "white",
-                                fontWeight: "800",
-                                textAlign: "center",
-                                zIndex: 100,
-                            }}>{category.category_name}</Text>
-                        </View>
-                    </ImageBackground>*/}
+
 
                 </View>
 
+                {isTabActive &&
+                <View style={{width:30,backgroundColor:"white",height:3,position:"absolute",bottom:4,alignSelf:"center"}}/>
+                }
+                </View>
 
             </TouchableWithoutFeedback>
 
@@ -247,8 +227,9 @@ const ScrollableTabBar = createReactClass({
             height: 2,
             backgroundColor: 'white',
             bottom: 0,
-
         };
+
+        console.log(this.state._widthTabUnderline)
 
         const dynamicTabUnderline = {
             left: this.state._leftTabUnderline,
@@ -259,7 +240,7 @@ const ScrollableTabBar = createReactClass({
         return <Animated.View
             style={[styles.container, {
                 backgroundColor: this.props.backgroundColor,
-                height: this.props.cateImageViewHeight,
+                //height: this.props.cateImageViewHeight,
             }, this.props.style,]}
             onLayout={this.onContainerLayout}
         >
@@ -277,7 +258,7 @@ const ScrollableTabBar = createReactClass({
                 <View
                     style={[styles.tabs, {
                         width: this.state._containerWidth,
-                        paddingTop: 10, paddingBottom: 10,
+                        paddingTop: 10, paddingBottom: 10,paddingLeft: 10,paddingRight: 10
                     }, this.props.tabsContainerStyle,]}
                     ref={'tabContainer'}
                     onLayout={this.onTabContainerLayout}
@@ -287,7 +268,7 @@ const ScrollableTabBar = createReactClass({
                         const renderTab = this.props.renderTab || this.renderTab;
                         return renderTab(name, page, isTabActive, this.props.goToPage, this.measureTab.bind(this, page));
                     })}
-                    <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle, ]} />
+                    {/*<Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle, ]} />*/}
                 </View>
             </ScrollView>
         </Animated.View>;
