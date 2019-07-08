@@ -168,7 +168,8 @@ const ScrollableTabBar = createReactClass({
                     <Image style={{
                         height: "100%",
                         width: "95%",
-                        borderRadius: 10
+                        borderRadius: 10,
+backgroundColor:"#eee"
                     }}
                                      //imageStyle={{borderRadius: 10,}}
                            source={{uri: "https://www.staplesadvantage.co.uk/fileadmin/san/opcos/eu/images/solutions/sustainable_environment/vendors/diversey_sure/sure_square_small.jpg"}}
