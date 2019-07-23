@@ -149,7 +149,7 @@ const ScrollableTabBar = createReactClass({
 
         return (
 
-            <TouchableWithoutFeedback
+                 <TouchableWithoutFeedback
                 key={`${category.category_name}_${page}`}
                 accessible={true}
                 accessibilityLabel={category.category_name}
@@ -169,20 +169,20 @@ const ScrollableTabBar = createReactClass({
                         height: "100%",
                         width: "95%",
                         borderRadius: 10,
-backgroundColor:"#eee"
+            backgroundColor:"#eee"
                     }}
-                                     //imageStyle={{borderRadius: 10,}}
                            source={{uri: category.image}}
                     />
                     <View style={{
                         width: '95%',
-                        bottom: 7,
+                        bottom: 12,
                         position: 'absolute',
                         zIndex: 100,alignItems: "center",
                     }}>
                         <Text style={{
                             color: "white",
-                            fontWeight: "800",
+                            fontWeight: "600",
+                            fontSize:12,
                             textAlign: "center",
                         }} numberOfLines={1}>{category.category_name}</Text>
                     </View>
@@ -201,12 +201,11 @@ backgroundColor:"#eee"
                 </View>
 
                 {isTabActive &&
-                <View style={{width:30,backgroundColor:"white",height:3,position:"absolute",bottom:4,alignSelf:"center"}}/>
+                <View style={{width:30,backgroundColor:"white",height:3,position:"absolute",bottom:6,alignSelf:"center"}}/>
                 }
                 </View>
 
             </TouchableWithoutFeedback>
-
 
         )
     },
