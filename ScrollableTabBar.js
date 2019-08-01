@@ -139,7 +139,7 @@ const ScrollableTabBar = createReactClass({
     },
 
     renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
-        const {activeTextColor, inactiveTextColor, textStyle,} = this.props;
+        const {activeTextColor, inactiveTextColor, textStyle,cateImageHeight} = this.props;
         const textColor = isTabActive ? activeTextColor : inactiveTextColor;
         const fontWeight = isTabActive ? 'bold' : 'normal';
 
@@ -149,7 +149,7 @@ const ScrollableTabBar = createReactClass({
 
         return (
 
-                 <TouchableWithoutFeedback
+            <TouchableWithoutFeedback
                 key={`${category.category_name}_${page}`}
                 accessible={true}
                 accessibilityLabel={category.category_name}
@@ -165,11 +165,16 @@ const ScrollableTabBar = createReactClass({
                     overflow: "hidden",
                     borderRadius: 10, alignItems: "center", justifyContent: "center", flex: 1, flexDirection: "column"
                 }}>
-                    <Image style={{
+                    <Animated.Image style={{
                         height: "100%",
-                        width: "95%",
+                        width: CATE_IMAGE_Width - 14,
                         borderRadius: 10,
-            backgroundColor:"#eee"
+                        backgroundColor:"#eee",
+                       /* transform:[
+                            {
+                                translateY: cateImageHeight
+                            }
+                        ]*/
                     }}
                            source={{uri: category.image}}
                     />
@@ -181,7 +186,7 @@ const ScrollableTabBar = createReactClass({
                     }}>
                         <Text style={{
                             color: "white",
-                            fontWeight: "600",
+                            fontWeight: fontWeight,
                             fontSize:12,
                             textAlign: "center",
                         }} numberOfLines={1}>{category.category_name}</Text>
@@ -207,13 +212,16 @@ const ScrollableTabBar = createReactClass({
 
             </TouchableWithoutFeedback>
 
+
         )
     },
 
     measureTab(page, event) {
-        const {x, width, height,} = event.nativeEvent.layout;
-        this._tabsMeasurements[page] = {left: x, right: x + width, width, height,};
-        this.updateView({value: this.props.scrollValue.__getValue(),});
+        if(!this.props.isScrollY) {
+            const {x, width, height,} = event.nativeEvent.layout;
+            this._tabsMeasurements[page] = {left: x, right: x + width, width, height,};
+            this.updateView({value: this.props.scrollValue.__getValue(),});
+        }
     },
 
     render() {
@@ -273,20 +281,30 @@ const ScrollableTabBar = createReactClass({
             this.setState({_containerWidth: null,});
         }
     },
-
+    
     onTabContainerLayout(e) {
-        this._tabContainerMeasurements = e.nativeEvent.layout;
-        let width = this._tabContainerMeasurements.width;
-        if (width < WINDOW_WIDTH) {
-            width = WINDOW_WIDTH;
+
+        if(!this.props.isScrollY){
+
+            this._tabContainerMeasurements = e.nativeEvent.layout;
+            let width = this._tabContainerMeasurements.width;
+            if (width < WINDOW_WIDTH) {
+                width = WINDOW_WIDTH;
+            }
+            this.setState({_containerWidth: width,});
+            this.updateView({value: this.props.scrollValue.__getValue(),});
+
         }
-        this.setState({_containerWidth: width,});
-        this.updateView({value: this.props.scrollValue.__getValue(),});
+
+
     },
 
     onContainerLayout(e) {
-        this._containerMeasurements = e.nativeEvent.layout;
-        this.updateView({value: this.props.scrollValue.__getValue(),});
+
+        if(!this.props.isScrollY) {
+            this._containerMeasurements = e.nativeEvent.layout;
+            this.updateView({value: this.props.scrollValue.__getValue(),});
+        }
     },
 });
 
